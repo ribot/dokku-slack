@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+if [ "$SLACK_NOTIFY" == 1 ]; then
+  APP="$1";
+  IMAGE="$2";
+  HOSTNAME=$(hostname -f);
+
+  echo "-----> Notifying Slack ..."
+  echo "Deployed $APP to $HOSTNAME" | $PLUGIN_PATH/dokku-slack/slack-notify >/dev/null
+fi

@@ -15,7 +15,7 @@ Edit `/home/dokku/dockerrc` or `/etc/slack`
 ```sh
 export SLACK_DOMAIN=<domain>
 export SLACK_TOKEN=<token>
-export SLACK_FROM='Dokku'
+export SLACK_USERNAME='Dokku'
 ```
 
 The domain is the subdomain part of the URL use use to get to the Slack webapp. For example for `http://ribot.slack.com/` it's `ribot`.
