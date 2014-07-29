@@ -6,6 +6,14 @@ if [ "$SLACK_NOTIFY" == 1 ]; then
   IMAGE="$2";
   HOSTNAME=$(hostname -f);
 
+  if [ -f $DOKKU_ROOT/$APP/ENV ];then
+    if grep SLACK_CHANNEL $DOKKU_ROOT/$APP/ENV ; then
+      unset SLACK_CHANNEL
+      eval `grep SLACK_CHANNEL $DOKKU_ROOT/$APP/ENV`
+    fi
+  fi
+
+
   echo "-----> Notifying Slack ..."
-  echo "Deployed $APP to $HOSTNAME" | $PLUGIN_PATH/dokku-slack/slack-notify >/dev/null
+  echo "Deployed $APP to $HOSTNAME via https://$APP.$HOSTNAME" | $PLUGIN_PATH/dokku-slack/slack-notify >/dev/null
 fi
