@@ -10,15 +10,25 @@ git clone https://github.com/ribot/dokku-slack.git /var/lib/dokku/plugins/dokku-
 
 ## Configuration
 
-Edit `/home/dokku/dockerrc` or `/etc/slack`
+Edit `/home/dokku/dokkurc` or `/etc/slack`
 
 ```sh
+export SLACK_NOTIFY=1
 export SLACK_DOMAIN=<domain>
 export SLACK_TOKEN=<token>
 export SLACK_USERNAME='Dokku'
+export SLACK_CHANNEL=dokku #default_channel
 ```
 
 The domain is the subdomain part of the URL use use to get to the Slack webapp. For example for `http://ribot.slack.com/` it's `ribot`.
+
+### Using app specific channel
+
+```sh
+dokku config:set $APP SLACK_CHANNEL=your_channel
+```
+
+You can send notification to app specific channel.
 
 ## License
 
