@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
+APP="$1";
+IMAGE="$2";
+HOSTNAME=$(hostname -f);
+
+if [ -f $DOKKU_ROOT/$APP/ENV ];then
+  if grep SLACK_NOTIFY $DOKKU_ROOT/$APP/ENV ; then
+    unset SLACK_NOTIFY
+    eval `grep SLACK_NOTIFY $DOKKU_ROOT/$APP/ENV`
+  fi
+fi
+
 if [ "$SLACK_NOTIFY" == 1 ]; then
-  APP="$1";
-  IMAGE="$2";
-  HOSTNAME=$(hostname -f);
 
   if [ -f $DOKKU_ROOT/$APP/ENV ];then
     if grep SLACK_CHANNEL $DOKKU_ROOT/$APP/ENV ; then
@@ -15,5 +23,5 @@ if [ "$SLACK_NOTIFY" == 1 ]; then
 
 
   echo "-----> Notifying Slack ..."
-  echo "Deployed $APP to $HOSTNAME via https://$APP.$HOSTNAME" | $PLUGIN_PATH/dokku-slack/slack-notify >/dev/null
+  echo ":ship: Deployed $APP to $HOSTNAME via `cat $DOKKU_ROOT/$APP/URL`" | $PLUGIN_PATH/dokku-slack/slack-notify
 fi
