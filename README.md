@@ -22,6 +22,20 @@ export SLACK_CHANNEL=dokku #default_channel
 
 The domain is the subdomain part of the URL use use to get to the Slack webapp. For example for `http://ribot.slack.com/` it's `ribot`.
 
+### Enabling or disabling for a specific app
+
+Enabling for a specific app:
+
+```sh
+dokku config:set $APP SLACK_NOTIFY=1
+```
+
+Disabling for a specific app:
+
+```sh
+dokku config:set $APP SLACK_NOTIFY=0
+```
+
 ### Using app specific channel
 
 ```sh
