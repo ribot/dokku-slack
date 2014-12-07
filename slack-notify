@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# Check we have a slack domain
-if [ ! -n "$SLACK_DOMAIN" ]; then
-  echo 'Please specify the domain'; exit 1
-fi
-
-# Check we have a slack token
-if [ ! -n "$SLACK_TOKEN" ]; then
+# Check we have a slack url
+if [ ! -n "$SLACK_URL" ]; then
   echo 'Please specify a token'; exit 1
 fi
 
@@ -28,7 +23,7 @@ fi
 JSON="{\"channel\": \"#$SLACK_CHANNEL\", \"text\": \"$MESSAGE\", \"username\": \"$SLACK_USERNAME\"}"
 
 # Send the message
-RESULT=`curl -s -d "payload=$JSON" "https://$SLACK_DOMAIN.slack.com/services/hooks/incoming-webhook?token=$SLACK_TOKEN" -w "%{http_code}"`
+RESULT=`curl -s -d "payload=$JSON" "${SLACK_URL}" -w "%{http_code}"`
 echo $RESULT
 
 # TODO: Add error handling
