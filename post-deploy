@@ -1,27 +1,22 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
-APP="$1";
-IMAGE="$2";
-HOSTNAME=$(hostname -f);
+APP="$1"
+IMAGE="$2"
+HOSTNAME=$(hostname -f)
 
-if [ -f $DOKKU_ROOT/$APP/ENV ];then
-  if grep SLACK_NOTIFY $DOKKU_ROOT/$APP/ENV ; then
-    unset SLACK_NOTIFY
-    eval `grep SLACK_NOTIFY $DOKKU_ROOT/$APP/ENV`
-  fi
-fi
-
-if [ "$SLACK_NOTIFY" == 1 ]; then
-
-  if [ -f $DOKKU_ROOT/$APP/ENV ];then
-    if grep SLACK_CHANNEL $DOKKU_ROOT/$APP/ENV ; then
-      unset SLACK_CHANNEL
-      eval `grep SLACK_CHANNEL $DOKKU_ROOT/$APP/ENV`
-    fi
-  fi
-
-
+if [ -f $DOKKU_ROOT/$APP/SLACK_URL ]; then
   echo "-----> Notifying Slack ..."
-  echo ":ship: Deployed $APP to $HOSTNAME via `cat $DOKKU_ROOT/$APP/URL`" | $PLUGIN_PATH/dokku-slack/slack-notify
+  URL=$(cat $DOKKU_ROOT/$APP/URL)
+  SLACK_URL=$(cat $DOKKU_ROOT/$APP/SLACK_URL)
+  SLACK_JSON="{ \
+    \"attachments\": [{ \
+      \"text\": \"Deployed $APP to $HOSTNAME via $URL\", \
+      \"fallback\": \"Deployed $APP to $HOSTNAME via $URL\", \
+      \"color\": \"good\", \
+      \"mrkdwn_in\": [\"text\"] \
+    }] \
+  }"
+  SLACK_RESULT=$(curl -s -d "payload=$SLACK_JSON" "${SLACK_URL}" -w "%{http_code}")
+  echo "       ${SLACK_RESULT}"
 fi

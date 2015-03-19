@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+source "$(dirname $0)/../common/functions"
+
+case "$1" in
+  slack:set)
+    [[ -z $2 ]] && echo "Please specify an app to run the command on" && exit 1
+    verify_app_name "$2"
+    APP="$2"
+    echo "$3" > "$DOKKU_ROOT/$APP/SLACK_URL"
+    ;;
+
+  slack:clear)
+    [[ -z $2 ]] && echo "Please specify an app to run the command on" && exit 1
+    verify_app_name "$2"
+    APP="$2"
+    rm "$DOKKU_ROOT/$APP/SLACK_URL"
+    ;;
+
+  slack:get)
+    [[ -z $2 ]] && echo "Please specify an app to run the command on" && exit 1
+    verify_app_name "$2"
+    APP="$2"
+    cat "$DOKKU_ROOT/$APP/SLACK_URL"
+    ;;
+
+  help)
+    cat && cat<<EOF
+    slack:set <app> <service_url>                   Set Slack service URL
+    slack:clear <app>                               Clears Slack service URL
+    slack:get <app>                                 Display Slack service URL
+EOF
+    ;;
+
+  *)
+    exit $DOKKU_NOT_IMPLEMENTED_EXIT
+    ;;
+esac
