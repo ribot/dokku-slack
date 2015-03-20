@@ -5,49 +5,26 @@ Dokku Slack is a plugin for [Dokku](https://github.com/progrium/dokku) that noti
 ## Installation
 
 ```sh
-git clone https://github.com/ribot/dokku-slack.git /var/lib/dokku/plugins/dokku-slack
+git clone https://github.com/ribot/dokku-slack /var/lib/dokku/plugins/slack
 ```
 
-## Configuration
-
-Edit `/home/dokku/dokkurc` or `/etc/slack`
+## Commands
 
 ```sh
-export SLACK_NOTIFY=1
-export SLACK_URL=<url>
-export SLACK_USERNAME='Dokku'
-export SLACK_CHANNEL=dokku #default_channel
+$ dokku help
+    slack:set <app> <webhook_url>                   Set Slack WebHook URL
+    slack:clear <app>                               Clears Slack WebHook URL
+    slack:get <app>                                 Display Slack WebHook URL
 ```
 
-The URL is found in the configuration of your incoming webhook.
-
-### Enabling or disabling for a specific app
-
-Enabling for a specific app:
-
-```sh
-dokku config:set $APP SLACK_NOTIFY=1
-```
-
-Disabling for a specific app:
-
-```sh
-dokku config:set $APP SLACK_NOTIFY=0
-```
-
-### Using app specific channel
-
-```sh
-dokku config:set $APP SLACK_CHANNEL=your_channel
-```
-
-You can send notification to app specific channel.
+To get **WebHook URL** you need to create a new
+[**Incoming WebHook integration**](https://slack.com/services/new/incoming-webhook).
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014 ribot
+Copyright (c) 2015 ribot
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
