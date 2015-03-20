@@ -12,10 +12,13 @@ git clone https://github.com/ribot/dokku-slack /var/lib/dokku/plugins/slack
 
 ```sh
 $ dokku help
-    slack:set <app> <service_url>                   Set Slack service URL
-    slack:clear <app>                               Clears Slack service URL
-    slack:get <app>                                 Display Slack service URL
+    slack:set <app> <webhook_url>                   Set Slack WebHook URL
+    slack:clear <app>                               Clears Slack WebHook URL
+    slack:get <app>                                 Display Slack WebHook URL
 ```
+
+To get **WebHook URL** you need to create a new
+[**Incoming WebHook integration**](https://slack.com/services/new/incoming-webhook).
 
 ## License
 

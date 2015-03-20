@@ -26,9 +26,9 @@ case "$1" in
 
   help)
     cat && cat<<EOF
-    slack:set <app> <service_url>                   Set Slack service URL
-    slack:clear <app>                               Clears Slack service URL
-    slack:get <app>                                 Display Slack service URL
+    slack:set <app> <webhook_url>                   Set Slack WebHook URL
+    slack:clear <app>                               Clears Slack WebHook URL
+    slack:get <app>                                 Display Slack WebHook URL
 EOF
     ;;
 
