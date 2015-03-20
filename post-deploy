@@ -7,7 +7,7 @@ HOSTNAME=$(hostname -f)
 
 if [ -f $DOKKU_ROOT/$APP/SLACK_URL ]; then
   echo "-----> Notifying Slack ..."
-  URL=$(cat $DOKKU_ROOT/$APP/URL)
+  URL=$(dokku url $APP)
   SLACK_URL=$(cat $DOKKU_ROOT/$APP/SLACK_URL)
   SLACK_JSON="{ \
     \"attachments\": [{ \
