@@ -5,10 +5,10 @@ APP="$1"
 IMAGE="$2"
 HOSTNAME=$(hostname -f)
 
-if [ -f $DOKKU_ROOT/$APP/SLACK_URL ]; then
+if [[ -f "$DOKKU_ROOT/$APP/SLACK_URL" || -f "$DOKKU_ROOT/SLACK_URL" ]]; then
   echo "-----> Notifying Slack ..."
   URL=$(dokku url $APP)
-  SLACK_URL=$(cat $DOKKU_ROOT/$APP/SLACK_URL)
+  SLACK_URL=$(cat "$DOKKU_ROOT/$APP/SLACK_URL" 2> /dev/null || cat "$DOKKU_ROOT/SLACK_URL" 2> /dev/null)
   SLACK_JSON="{ \
     \"attachments\": [{ \
       \"text\": \"Deployed $APP to $HOSTNAME via $URL\", \
