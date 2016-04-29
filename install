@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+case "$DOKKU_DISTRO" in
+  ubuntu)
+    if [[ -z $(which curl) ]]; then
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get install -qq -y curl
+    fi
+    ;;
+esac
