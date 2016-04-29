@@ -1,35 +1,35 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
-
-PLUGIN_BASE_PATH="$PLUGIN_PATH"
-if [[ -n $DOKKU_API_VERSION ]]; then
-  PLUGIN_BASE_PATH="$PLUGIN_ENABLED_PATH"
-fi
-source "$PLUGIN_BASE_PATH/common/functions"
-
-is_webhook() {
-  echo "$1" | grep -E '^http[s]?://'
-}
-
-get_slack_root() {
-  if [[ -z $(is_webhook "$1") ]]; then
-    verify_app_name "$1"
-    APP="$1"
-    echo "$DOKKU_ROOT/$APP"
-  else
-    echo "$DOKKU_ROOT"
-  fi
-}
-
-get_webhook() {
-  if [[ -n $1 && -n $2 ]]; then
-    echo "$2"
-  else
-    echo "$1"
-  fi
-}
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
+source "$PLUGIN_AVAILABLE_PATH/slack/functions"
 
 case "$1" in
+
+  help | slack:help)
+    help_content_func() {
+      declare desc="return help_content string"
+      cat<<help_content
+    slack:set [app] <webhook_url>, Set Slack WebHook URL
+    slack:set <webhook_url>, Set Global Slack WebHook URL
+    slack:clear [app], Clears Slack WebHook URL
+    slack:get [app], Display Slack WebHook URL
+help_content
+    }
+    if [[ $1 = "slack:help" ]] ; then
+      echo -e 'Dokku Slack'
+      echo ''
+      echo 'Usage:'
+      echo ''
+      echo '  $ dokku slack:set [app] <webhook_url>       Set Slack WebHook URL'
+      echo '  $ dokku slack:set <webhook_url>             Set Global Slack WebHook URL'
+      echo '  $ dokku slack:clear [app]                   Clears Slack WebHook URL'
+      echo '  $ dokku slack:get [app]                     Display Slack WebHook URL'
+      echo ''
+    else
+      help_content_func
+    fi
+    ;;
+    
   slack:set)
     SLACK_ROOT=$(get_slack_root "$2")
     WEBHOOK=$(get_webhook "$2" "$3")
@@ -44,24 +44,9 @@ case "$1" in
     ;;
 
   slack:get)
-    SLACK_ROOT=$(get_slack_root "$2")
-    cat "$SLACK_ROOT/SLACK_URL"
+    echo $(get_slack_url "$2" "$3")
     ;;
-
-  help)
-    HELP=$(cat<<EOF
-    slack:set [app] <webhook_url>, Set Slack WebHook URL
-    slack:clear [app], Clears Slack WebHook URL
-    slack:get [app], Display Slack WebHook URL
-EOF
-)
-    if [[ -n $DOKKU_API_VERSION ]]; then
-      echo "$HELP"
-    else
-      cat && echo "$HELP"
-    fi
-    ;;
-
+    
   *)
     exit $DOKKU_NOT_IMPLEMENTED_EXIT
     ;;
