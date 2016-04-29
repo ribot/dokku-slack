@@ -1,4 +1,4 @@
-# Dokku Slack
+<img src="https://cdn.rawgit.com/crisward/dokku-slack/master/dokku-slack.svg" height="140"/>
 
 Dokku Slack is a plugin for [Dokku](https://github.com/progrium/dokku) that notifies [Slack](http://www.slack.com) of deployments.
 
@@ -6,10 +6,10 @@ Dokku Slack is a plugin for [Dokku](https://github.com/progrium/dokku) that noti
 
 ```sh
 # dokku 0.3.26
-$ git clone https://github.com/ribot/dokku-slack /var/lib/dokku/plugins/slack
+$ git clone https://github.com/ribot/dokku-slack /var/lib/dokku/plugins/slack slack
 
 # dokku 0.4+
-$ dokku plugin:install https://github.com/ribot/dokku-slack.git
+$ dokku plugin:install https://github.com/ribot/dokku-slack.git slack
 ```
 
 ## Commands
@@ -17,12 +17,17 @@ $ dokku plugin:install https://github.com/ribot/dokku-slack.git
 ```sh
 $ dokku help
     slack:set <app> <webhook_url>                   Set Slack WebHook URL
+    slack:set <webhook_url>                         Set same WebHook URL for all Apps
     slack:clear <app>                               Clears Slack WebHook URL
     slack:get <app>                                 Display Slack WebHook URL
 ```
 
 To get **WebHook URL** you need to create a new
 [**Incoming WebHook integration**](https://slack.com/services/new/incoming-webhook).
+
+## Credit
+
+Logo courtesy of the [Noun Project](https://thenounproject.com/)
 
 ## License
 
