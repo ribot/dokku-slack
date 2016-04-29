@@ -16,6 +16,7 @@ $ dokku plugin:install https://github.com/ribot/dokku-slack.git slack
 
 ```sh
 $ dokku help
+    slack:help                                      Show Only Slack Help
     slack:set <app> <webhook_url>                   Set Slack WebHook URL
     slack:set <webhook_url>                         Set same WebHook URL for all Apps
     slack:clear <app>                               Clears Slack WebHook URL
