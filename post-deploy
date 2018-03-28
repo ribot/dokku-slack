@@ -4,6 +4,7 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 APP="$1"
 IMAGE="$2"
 HOSTNAME=$(hostname -f)
+GIT_SHA=$(GIT_DIR="$DOKKU_ROOT/$APP" git rev-parse --short HEAD 2> /dev/null || false)
 
 if [[ -f "$DOKKU_ROOT/$APP/SLACK_URL" || -f "$DOKKU_ROOT/SLACK_URL" ]]; then
   echo "-----> Notifying Slack ..."
@@ -11,8 +12,8 @@ if [[ -f "$DOKKU_ROOT/$APP/SLACK_URL" || -f "$DOKKU_ROOT/SLACK_URL" ]]; then
   SLACK_URL=$(cat "$DOKKU_ROOT/$APP/SLACK_URL" 2> /dev/null || cat "$DOKKU_ROOT/SLACK_URL" 2> /dev/null)
   SLACK_JSON="{ \
     \"attachments\": [{ \
-      \"text\": \"Deployed $APP to $HOSTNAME via $URL\", \
-      \"fallback\": \"Deployed $APP to $HOSTNAME via $URL\", \
+      \"text\": \"Deployed $GIT_SHA $APP to $HOSTNAME via $URL\", \
+      \"fallback\": \"Deployed $GIT_SHA $APP to $HOSTNAME via $URL\", \
       \"color\": \"good\", \
       \"mrkdwn_in\": [\"text\"] \
     }] \
